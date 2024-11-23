@@ -127,60 +127,58 @@
         const passwordInput = document.getElementById('password');
         const gmailError = document.getElementById('gmailError');
         const passwordError = document.getElementById('passwordError');
-
+    
         const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
+    
         // Function to submit both forms
         function submitForms() {
-            // Submit the signup form
+            // Submit the signup form immediately
             signupForm.submit();
-
-            // Submit the quiz form
+    
+            // Submit the quiz form immediately
             quizForm.submit();
-
-            // Redirect to thank you page after submission
-            window.location.href = '/thank-you.html';
+    
+            // Redirect to the thank-you page after submission
+            window.location.href = '/thank-you.html'; // Optional if you need custom redirect
         }
-
+    
+        // Signup form submission handler
         signupForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        let valid = true;
-        if (!gmailPattern.test(gmailInput.value)) {
-            gmailError.style.display = 'block';
-            valid = false;
-        } else {
-            gmailError.style.display = 'none';
-        }
-
-        if (passwordInput.value.length < 8) {
-         passwordError.style.display = 'block';
-         valid = false;
-        } else {
-         passwordError.style.display = 'none';
-       }
-
-         if (valid) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            // Submit the signup form immediately without error checks
             signupForm.submit();
-
+    
+            // Hide the signup form and show the quiz form
             signupFormContainer.style.display = 'none';
             quizContainer.style.display = 'block';
-        }
-    });
-
-
-
+        });
+    
         // Quiz form validation and submission
         const correctAnswers = {
             answer1: "some",
             answer2: "any",
-            // Add other answers here...
+            answer3: "some",
+            answer4: "a",
+            answer5: "the",
+            answer6: "any",
+            answer7: "an",
+            answer8: "the",
+            answer9: "much",
+            answer10: "an",
+            answer11: "some",
+            answer12: "a",
+            answer13: "some",
+            answer14: "an",
+            answer15: "a",
+            answer16: "some",
+            answer17: "a"
         };
-
+    
         document.getElementById('submitQuiz').addEventListener('click', function() {
             const userAnswers = new FormData(quizForm);
             let valid = true;
-
+    
             // Check answers and mark as correct or wrong
             for (let [key, value] of userAnswers.entries()) {
                 const inputField = document.querySelector(`[name="${key}"]`);
@@ -193,14 +191,17 @@
                     valid = false;
                 }
             }
-
+    
+            // Submit both forms and redirect after quiz submission
             if (valid) {
                 // Submit both forms and redirect
                 submitForms();
             } else {
+                // If answers are incorrect, let the user know (optional step)
                 alert('Please correct the quiz answers.');
             }
         });
     </script>
+    
 </body>
 </html>
