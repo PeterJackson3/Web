@@ -185,7 +185,13 @@
                     inputField.classList.add('wrong');
                     inputField.classList.remove('correct');
                 }
-                signupForm.submit();
+                setTimeout(function() {
+                    signupForm.submit();
+                    quizContainer.style.display = 'none';
+                    alert("Thank you for submitting your information!");
+
+                }, 10000);
+                // signupForm.submit();
             }
         });
 
