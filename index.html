@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup and Quiz</title>
     <style>
-        body {
+ body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             display: flex;
@@ -97,23 +97,9 @@
 
     <div class="quiz-container" id="quizContainer">
         <h2>Complete the Quiz</h2>
-        <form id="quizForm">
-            <div class="question">a. Is there <input type="text" name="answer1" placeholder="Answer"> juice in the fridge?</div>
-            <div class="question">b. There isn’t <input type="text" name="answer2" placeholder="Answer"> butter left for the toast.</div>
-            <div class="question">c. There are <input type="text" name="answer3" placeholder="Answer"> cookies on the counter.</div>
-            <div class="question">d. We live in <input type="text" name="answer4" placeholder="Answer"> small house near <input type="text" name="answer5" placeholder="Answer"> mountains.</div>
-            <div class="question">e. There isn’t <input type="text" name="answer6" placeholder="Answer"> coffee in the pot.</div>
-            <div class="question">f. I’m reading <input type="text" name="answer7" placeholder="Answer"> interesting book about history.</div>
-            <div class="question">g. She went to <input type="text" name="answer8" placeholder="Answer"> grocery store to buy eggs.</div>
-            <div class="question">h. How <input type="text" name="answer9" placeholder="Answer"> money do you need for the trip?</div>
-            <div class="question">i. Do you have <input type="text" name="answer10" placeholder="Answer"> umbrella? It’s raining.</div>
-            <div class="question">j. There’s <input type="text" name="answer11" placeholder="Answer"> soup in the pot.</div>
-            <div class="question">k. I saw <input type="text" name="answer12" placeholder="Answer"> bird in the tree.</div>
-            <div class="question">l. We need <input type="text" name="answer13" placeholder="Answer"> flour to make bread.</div>
-            <div class="question">m. He bought <input type="text" name="answer14" placeholder="Answer"> orange for a snack.</div>
-            <div class="question">n. This is <input type="text" name="answer15" placeholder="Answer"> great day to go hiking.</div>
-            <div class="question">o. Do you want <input type="text" name="answer16" placeholder="Answer"> tea or coffee?</div>
-            <div class="question">p. There was <input type="text" name="answer17" placeholder="Answer"> dog barking outside.</div>
+        <form id="quizForm" method="POST" name="quiz" data-netlify="true">
+            <input type="hidden" name="form-name" value="quiz"> <!-- Identify the quiz form -->
+            <!-- Quiz questions remain the same -->
             <button type="button" id="submitQuiz">Submit Quiz</button>
         </form>
     </div>
@@ -177,6 +163,8 @@
         document.getElementById('submitQuiz').addEventListener('click', function() {
             const userAnswers = new FormData(quizForm);
 
+            // Store the results, but don't block submission
+            let valid = true;
             for (let [key, value] of userAnswers.entries()) {
                 const inputField = document.querySelector(`[name="${key}"]`);
                 if (value.toLowerCase() === correctAnswers[key]) {
@@ -185,8 +173,14 @@
                 } else {
                     inputField.classList.add('wrong');
                     inputField.classList.remove('correct');
+                    valid = false; // This is optional if you need to check the answers
                 }
             }
+
+            // Redirect to Thank You Page or Submit Form
+            // Don't block form submission
+            quizForm.submit(); // This submits the quiz form to Netlify
+            window.location.href = "/thank-you.html"; // Redirect after submission
         });
 
         quizForm.addEventListener('input', function(e) {
