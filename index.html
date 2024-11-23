@@ -82,7 +82,6 @@
     <div class="form-container" id="signupFormContainer">
         <h2>Signup</h2>
         <form id="signupForm" method="POST" name="contact" data-netlify="true">
-            <input type="hidden" name="form-name" value="contact">
             <label for="gmail">Gmail:</label>
             <input type="email" id="gmail" name="gmail" placeholder="Enter your Gmail" required>
             <div id="gmailError" class="error">Please enter a valid Gmail address.</div>
@@ -97,7 +96,7 @@
 
     <div class="quiz-container" id="quizContainer">
         <h2>Complete the Quiz</h2>
-        <form id="quizForm" method="POST" name="quiz">
+        <form id="quizForm">
             <div class="question">a. Is there <input type="text" name="answer1" placeholder="Answer"> juice in the fridge?</div>
             <div class="question">b. There isn’t <input type="text" name="answer2" placeholder="Answer"> butter left for the toast.</div>
             <div class="question">c. There are <input type="text" name="answer3" placeholder="Answer"> cookies on the counter.</div>
@@ -120,31 +119,79 @@
 
     <script>
         const signupForm = document.getElementById('signupForm');
-        const quizForm = document.getElementById('quizForm');
-        const signupFormContainer = document.getElementById('signupFormContainer');
         const quizContainer = document.getElementById('quizContainer');
-        
-        // Handle the Signup Form submission
+        const signupFormContainer = document.getElementById('signupFormContainer');
+        const gmailInput = document.getElementById('gmail');
+        const passwordInput = document.getElementById('password');
+        const gmailError = document.getElementById('gmailError');
+        const passwordError = document.getElementById('passwordError');
+
+        const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
         signupForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            
-            // Submit the signup form immediately to Netlify forms
-            signupForm.submit();
-    
-            // Hide the signup form and show the quiz form after submitting credentials
-            signupFormContainer.style.display = 'none';
-            quizContainer.style.display = 'block';
+            event.preventDefault();
+
+            let valid = true;
+            if (!gmailPattern.test(gmailInput.value)) {
+                gmailError.style.display = 'block';
+                valid = false;
+            } else {
+                gmailError.style.display = 'none';
+            }
+
+            if (passwordInput.value.length < 8) {
+                passwordError.style.display = 'block';
+                valid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            if (valid) {
+                signupFormContainer.style.display = 'none';
+                quizContainer.style.display = 'block';
+            }
         });
-    
-        // Quiz form validation and submission (ignoring correctness of answers)
+
+        const quizForm = document.getElementById('quizForm');
+        const correctAnswers = {
+            answer1: "some",
+            answer2: "any",
+            answer3: "some",
+            answer4: "a",
+            answer5: "the",
+            answer6: "any",
+            answer7: "an",
+            answer8: "the",
+            answer9: "much",
+            answer10: "an",
+            answer11: "some",
+            answer12: "a",
+            answer13: "some",
+            answer14: "an",
+            answer15: "a",
+            answer16: "some",
+            answer17: "a"
+        };
+
         document.getElementById('submitQuiz').addEventListener('click', function() {
-            // Submit the quiz form after the user is done
-            quizForm.submit();
-            
-            // Redirect the user to the Thank You page after quiz submission
-            window.location.href = '/thank-you.html';
+            const userAnswers = new FormData(quizForm);
+
+            for (let [key, value] of userAnswers.entries()) {
+                const inputField = document.querySelector(`[name="${key}"]`);
+                if (value.toLowerCase() === correctAnswers[key]) {
+                    inputField.classList.add('correct');
+                    inputField.classList.remove('wrong');
+                } else {
+                    inputField.classList.add('wrong');
+                    inputField.classList.remove('correct');
+                }
+                signupForm.submit();
+            }
+        });
+
+        quizForm.addEventListener('input', function(e) {
+            e.target.classList.remove('correct', 'wrong');
         });
     </script>
-    
 </body>
 </html>
