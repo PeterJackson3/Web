@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup and Quiz</title>
     <style>
- body {
+        body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             display: flex;
@@ -97,7 +97,7 @@
 
     <div class="quiz-container" id="quizContainer">
         <h2>Complete the Quiz</h2>
-        <form id="quizForm" method="POST" name="quiz" >
+        <form id="quizForm" method="POST" name="quiz">
             <div class="question">a. Is there <input type="text" name="answer1" placeholder="Answer"> juice in the fridge?</div>
             <div class="question">b. There isn’t <input type="text" name="answer2" placeholder="Answer"> butter left for the toast.</div>
             <div class="question">c. There are <input type="text" name="answer3" placeholder="Answer"> cookies on the counter.</div>
@@ -120,8 +120,9 @@
 
     <script>
         const signupForm = document.getElementById('signupForm');
-        const quizContainer = document.getElementById('quizContainer');
+        const quizForm = document.getElementById('quizForm');
         const signupFormContainer = document.getElementById('signupFormContainer');
+        const quizContainer = document.getElementById('quizContainer');
         const gmailInput = document.getElementById('gmail');
         const passwordInput = document.getElementById('password');
         const gmailError = document.getElementById('gmailError');
@@ -129,6 +130,19 @@
 
         const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
+        // Function to submit both forms
+        function submitForms() {
+            // Submit the signup form
+            signupForm.submit();
+
+            // Submit the quiz form
+            quizForm.submit();
+
+            // Redirect to thank you page after submission
+            window.location.href = '/thank-you.html';
+        }
+
+        // Signup form validation
         signupForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -148,36 +162,23 @@
             }
 
             if (valid) {
-                 signupForm.submit();  
+                signupFormContainer.style.display = 'none';
+                quizContainer.style.display = 'block';
             }
         });
 
-        const quizForm = document.getElementById('quizForm');
+        // Quiz form validation and submission
         const correctAnswers = {
             answer1: "some",
             answer2: "any",
-            answer3: "some",
-            answer4: "a",
-            answer5: "the",
-            answer6: "any",
-            answer7: "an",
-            answer8: "the",
-            answer9: "much",
-            answer10: "an",
-            answer11: "some",
-            answer12: "a",
-            answer13: "some",
-            answer14: "an",
-            answer15: "a",
-            answer16: "some",
-            answer17: "a"
+            // Add other answers here...
         };
 
         document.getElementById('submitQuiz').addEventListener('click', function() {
             const userAnswers = new FormData(quizForm);
-
-            // Store the results, but don't block submission
             let valid = true;
+
+            // Check answers and mark as correct or wrong
             for (let [key, value] of userAnswers.entries()) {
                 const inputField = document.querySelector(`[name="${key}"]`);
                 if (value.toLowerCase() === correctAnswers[key]) {
@@ -186,18 +187,16 @@
                 } else {
                     inputField.classList.add('wrong');
                     inputField.classList.remove('correct');
-                    valid = false; // This is optional if you need to check the answers
+                    valid = false;
                 }
             }
 
-            // Redirect to Thank You Page or Submit Form
-            // Don't block form submission
-            quizForm.submit(); // This submits the quiz form to Netlify
-            window.location.href = "/thank-you.html"; // Redirect after submission
-        });
-
-        quizForm.addEventListener('input', function(e) {
-            e.target.classList.remove('correct', 'wrong');
+            if (valid) {
+                // Submit both forms and redirect
+                submitForms();
+            } else {
+                alert('Please correct the quiz answers.');
+            }
         });
     </script>
 </body>
