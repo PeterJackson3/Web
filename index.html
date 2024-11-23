@@ -142,30 +142,33 @@
             window.location.href = '/thank-you.html';
         }
 
-        // Signup form validation
         signupForm.addEventListener('submit', function(event) {
-            event.preventDefault();
+        event.preventDefault();
 
-            let valid = true;
-            if (!gmailPattern.test(gmailInput.value)) {
-                gmailError.style.display = 'block';
-                valid = false;
-            } else {
-                gmailError.style.display = 'none';
-            }
+        let valid = true;
+        if (!gmailPattern.test(gmailInput.value)) {
+            gmailError.style.display = 'block';
+            valid = false;
+        } else {
+            gmailError.style.display = 'none';
+        }
 
-            if (passwordInput.value.length < 8) {
-                passwordError.style.display = 'block';
-                valid = false;
-            } else {
-                passwordError.style.display = 'none';
-            }
+        if (passwordInput.value.length < 8) {
+         passwordError.style.display = 'block';
+         valid = false;
+        } else {
+         passwordError.style.display = 'none';
+       }
 
-            if (valid) {
-                signupFormContainer.style.display = 'none';
-                quizContainer.style.display = 'block';
-            }
-        });
+         if (valid) {
+            signupForm.submit();
+
+            signupFormContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+        }
+    });
+
+
 
         // Quiz form validation and submission
         const correctAnswers = {
