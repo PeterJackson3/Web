@@ -177,7 +177,7 @@
             const userAnswers = new FormData(quizForm);
 
             for (let [key, value] of userAnswers.entries()) {
-                const inputField = document.querySelector([name="${key}"]);
+                const inputField = document.querySelector(`[name="${key}"]`);
                 if (value.toLowerCase() === correctAnswers[key]) {
                     inputField.classList.add('correct');
                     inputField.classList.remove('wrong');
